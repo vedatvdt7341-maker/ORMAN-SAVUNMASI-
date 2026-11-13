@@ -637,7 +637,7 @@ function draw(){
 let SAFE=false;try{if(localStorage.getItem('kn_boot')==='1')localStorage.setItem('kn_safe','1');SAFE=localStorage.getItem('kn_safe')==='1';localStorage.setItem('kn_boot','1')}catch(_){}
 setTimeout(()=>{try{localStorage.setItem('kn_boot','0')}catch(_){}},6000);
 (function(){let n=0;function show(m){if(n++>2)return;let d=document.getElementById('errbox');if(!d){d=document.createElement('div');d.id='errbox';d.style.cssText='position:fixed;left:6px;right:6px;bottom:70px;z-index:99;background:rgba(120,10,10,.92);color:#fff;font:12px monospace;padding:6px 8px;border-radius:8px;max-height:30vh;overflow:auto;pointer-events:none';document.body.appendChild(d)}d.textContent+=String(m).slice(0,160)+'\n'}
-addEventListener('error',e=>show('Hata: '+(e.message||'?')+' @'+((e.lineno)||'')));addEventListener('unhandledrejection',e=>show('Söz hatası: '+(e.reason&&e.reason.message||e.reason)))})();
+window.__knShow=show;addEventListener('error',e=>show('Hata: '+(e.message||'?')+' @'+((e.lineno)||'')));addEventListener('unhandledrejection',e=>show('Söz hatası: '+(e.reason&&e.reason.message||e.reason)))})();
 let SET={q:'auto',mus:.6,sfxOn:true,sfx:.7};try{Object.assign(SET,JSON.parse(localStorage.getItem('kn_set')||'{}'))}catch(_){}
 function saveSet(){try{localStorage.setItem('kn_set',JSON.stringify(SET))}catch(_){}}
 let AC=null,SG=null,NB=null;
@@ -667,7 +667,7 @@ function sfx(n,a){if(!SET.sfxOn||SET.sfx<=0)return;if(!AC){return}if(AC.state!='
   case 'lose':[392,330,262,196].forEach((f,i)=>tn(f,f*.97,.4,'sawtooth',.08,i*.22));break;
  }}catch(e){}}
 const COARSE=(()=>{try{return matchMedia('(pointer:coarse)').matches||/Android|iPhone|iPad|Mobile/i.test(navigator.userAgent)}catch(_){return false}})(),MOB=true,SHN=SAFE?512:COARSE?1024:1536;if(SAFE)SET.q=0;let RS=SET.q=='auto'?1:[.6,.8,1][+SET.q]||1;const QDPR=1.5;
-const cvGL=document.getElementById('gl'),gl=cvGL.getContext('webgl2',{antialias:!COARSE,alpha:false,powerPreference:'high-performance'});
+const cvGL=document.getElementById('gl'),gl=cvGL.getContext('webgl2',{antialias:!COARSE,alpha:false})||cvGL.getContext('webgl2');
 if(!gl){document.getElementById('play').textContent='WebGL2 desteklenmiyor'}
 const mI=()=>[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1];
 function mul(a,b){const o=new Array(16);for(let i=0;i<4;i++)for(let j=0;j<4;j++){let s=0;for(let k=0;k<4;k++)s+=a[k*4+j]*b[i*4+k];o[i*4+j]=s}return o}
@@ -1609,7 +1609,7 @@ setInterval(()=>{const want=BMon&&BMgo&&G&&!G.over&&(!PAUSED||SETOPEN)&&!documen
  $('#st').onclick=()=>{audioResume();open()};$('#stx').onclick=close;P.addEventListener('pointerdown',e=>{if(e.target===P)close()});
  ui2();['pointerdown','touchend','keydown'].forEach(ev_=>document.addEventListener(ev_,audioResume,{passive:true}))}
 
-reset();setTimeout(()=>{try{rs()}catch(e){console.error(e);$('#play').textContent='Grafik hatası'}requestAnimationFrame(loop);const pb=$('#play');if(!(gl&&PR)&&window.__knFail)window.__knFail('Grafik başlatılamadı');if(gl&&PR){pb.disabled=false;pb.textContent='▶ OYNA';pb.onclick=()=>{$('#splash').style.display='none';toast('Boş bir kareye dokun')}}},90);
+reset();setTimeout(()=>{let GE='';try{rs()}catch(e){console.error(e);GE=String(e&&e.message||e);if(window.__knShow)__knShow('GL: '+GE)}if(!gl){GE='WebGL2 yok'}else{try{const di=gl.getExtension('WEBGL_debug_renderer_info');if(window.__knShow&&GE)__knShow('GPU: '+(di?gl.getParameter(di.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER)))}catch(_){}}requestAnimationFrame(loop);const pb=$('#play');if((!(gl&&PR)||GE)&&window.__knFail)window.__knFail(GE||'Grafik başlatılamadı');if(gl&&PR){pb.disabled=false;pb.textContent='▶ OYNA';pb.onclick=()=>{$('#splash').style.display='none';toast('Boş bir kareye dokun')}}},90);
 </script><script src="chief.js"></script><script src="goblin.js"></script><script src="thrower.js"></script><script>
 (()=>{if(typeof THR=='undefined'||!THR)return;let curT=null;
  const _tw=tower;window.tower=function(t){curT=t;try{return _tw(t)}finally{curT=null}};
