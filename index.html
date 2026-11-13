@@ -634,6 +634,10 @@ function draw(){
  ctx.globalAlpha=1;ctx.font='bold 20px Georgia';ctx.textAlign='center';
  for(const t of G.tx){ctx.globalAlpha=Math.min(1,t.l*1.5);ctx.fillStyle='#000';ctx.fillText(t.t,t.x+1,t.y+1);ctx.fillStyle='#ffd35a';ctx.fillText(t.t,t.x,t.y)}ctx.globalAlpha=1}
 /* ===================== 3D (WebGL2) KATMANI ===================== */
+let SAFE=false;try{if(localStorage.getItem('kn_boot')==='1')localStorage.setItem('kn_safe','1');SAFE=localStorage.getItem('kn_safe')==='1';localStorage.setItem('kn_boot','1')}catch(_){}
+setTimeout(()=>{try{localStorage.setItem('kn_boot','0')}catch(_){}},6000);
+(function(){let n=0;function show(m){if(n++>2)return;let d=document.getElementById('errbox');if(!d){d=document.createElement('div');d.id='errbox';d.style.cssText='position:fixed;left:6px;right:6px;bottom:70px;z-index:99;background:rgba(120,10,10,.92);color:#fff;font:12px monospace;padding:6px 8px;border-radius:8px;max-height:30vh;overflow:auto;pointer-events:none';document.body.appendChild(d)}d.textContent+=String(m).slice(0,160)+'\n'}
+addEventListener('error',e=>show('Hata: '+(e.message||'?')+' @'+((e.lineno)||'')));addEventListener('unhandledrejection',e=>show('Söz hatası: '+(e.reason&&e.reason.message||e.reason)))})();
 let SET={q:'auto',mus:.6,sfxOn:true,sfx:.7};try{Object.assign(SET,JSON.parse(localStorage.getItem('kn_set')||'{}'))}catch(_){}
 function saveSet(){try{localStorage.setItem('kn_set',JSON.stringify(SET))}catch(_){}}
 let AC=null,SG=null,NB=null;
@@ -662,7 +666,7 @@ function sfx(n,a){if(!SET.sfxOn||SET.sfx<=0)return;if(!AC){return}if(AC.state!='
   case 'win':[523,659,784,1046].forEach((f,i)=>tn(f,f,.35,'triangle',.11,i*.18));break;
   case 'lose':[392,330,262,196].forEach((f,i)=>tn(f,f*.97,.4,'sawtooth',.08,i*.22));break;
  }}catch(e){}}
-const COARSE=(()=>{try{return matchMedia('(pointer:coarse)').matches||/Android|iPhone|iPad|Mobile/i.test(navigator.userAgent)}catch(_){return false}})(),MOB=true,SHN=COARSE?1024:1536;let RS=SET.q=='auto'?1:[.6,.8,1][+SET.q]||1;const QDPR=1.5;
+const COARSE=(()=>{try{return matchMedia('(pointer:coarse)').matches||/Android|iPhone|iPad|Mobile/i.test(navigator.userAgent)}catch(_){return false}})(),MOB=true,SHN=SAFE?512:COARSE?1024:1536;if(SAFE)SET.q=0;let RS=SET.q=='auto'?1:[.6,.8,1][+SET.q]||1;const QDPR=1.5;
 const cvGL=document.getElementById('gl'),gl=cvGL.getContext('webgl2',{antialias:!COARSE,alpha:false,powerPreference:'high-performance'});
 if(!gl){document.getElementById('play').textContent='WebGL2 desteklenmiyor'}
 const mI=()=>[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1];
@@ -780,7 +784,7 @@ function camUpdate(){const asp=W/H,fov=.72;let d=CAM.dist*(asp<.9?PFAC:Math.max(
  const V=lookAt(EYE,[CAM.tx+sx,CAM.ty,CAM.tz+sz],[0,1,0]);VP=mul(persp(fov,asp,.5,170),V);if(asp<.9){const T=mI();T[13]=.17;VP=mul(T,VP)}IVP=inv4(VP);
  const c=[0,0,9.4],le=[c[0]+SUN[0]*50,c[1]+SUN[1]*50,c[2]+SUN[2]*50];LVP=mul(ortho(-27,27,-27,27,8,125),lookAt(le,c,[0,1,0]))}
 function prj(x,y,z){const p=xf(VP,x,y,z);if(p[3]<=0)return null;return[(p[0]*.5+.5)*W,(1-(p[1]*.5+.5))*H,p[3]]}
-function rs(){if(!innerWidth||!innerHeight){setTimeout(rs,100);return}DPR=Math.min(devicePixelRatio||1,2);const gs=Math.min(devicePixelRatio||1,Math.sqrt((COARSE?1300000:3000000)/(innerWidth*innerHeight)))*RS;W=innerWidth;H=innerHeight;{const pt=W/H<.9;if(pt!==rs.p){rs.p=pt;CAM.yaw=0;CAM.tx=pt?-99:3}}cv.width=W*DPR;cv.height=H*DPR;cvGL.width=Math.round(W*gs);cvGL.height=Math.round(H*gs);if(!PR){glInit();buildScene()}gl.viewport(0,0,cvGL.width,cvGL.height)}
+function rs(){if(!innerWidth||!innerHeight){setTimeout(rs,100);return}DPR=Math.min(devicePixelRatio||1,2);const gs=Math.min(devicePixelRatio||1,Math.sqrt((SAFE?600000:COARSE?1300000:3000000)/(innerWidth*innerHeight)))*RS;W=innerWidth;H=innerHeight;{const pt=W/H<.9;if(pt!==rs.p){rs.p=pt;CAM.yaw=0;CAM.tx=pt?-99:3}}cv.width=W*DPR;cv.height=H*DPR;cvGL.width=Math.round(W*gs);cvGL.height=Math.round(H*gs);if(!PR){glInit();buildScene()}gl.viewport(0,0,cvGL.width,cvGL.height)}
 function pos(e){const nx=e.clientX/W*2-1,ny=1-e.clientY/H*2,a=xf(IVP,nx,ny,-1),b=xf(IVP,nx,ny,1),t=-a[1]/(b[1]-a[1]);return adj_(2*Math.floor((a[0]+t*(b[0]-a[0])+N/2+.35)/2)+.15,2*Math.floor((a[2]+t*(b[2]-a[2]))/2)+.5)}function inR_(c,r){const i=Math.round(c+.35-.5),j=Math.round(r-.5);return(i>=11&&i<=15&&j<=13)||(i>=5&&i<=10&&j>=9&&j<=13)}function adj_(c,r){return inR_(c,r)?{c:c-.34,r:r-.51}:{c,r}}
 /* ---------- ortam ---------- */
 const hsm=(x,z)=>{const xi=Math.floor(x),zi=Math.floor(z),fx=x-xi,fz=z-zi,u=fx*fx*(3-2*fx),v=fz*fz*(3-2*fz),a=hs(xi,zi),b=hs(xi+1,zi),c=hs(xi,zi+1),d=hs(xi+1,zi+1);return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v};
