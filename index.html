@@ -848,7 +848,7 @@ function buildScene(){
  const gT1=tuft3G(8,.25,.085),gT2=tuft3G(10,.38,.12),gT3=tuft3G(5,.2,.06);
  const segB=(bt,a,b,r0,r1,col,gy,sg=8)=>{const dx=b[0]-a[0],dy=b[1]-a[1],dz=b[2]-a[2],L=Math.hypot(dx,dy,dz)||1e-4,ux=dx/L,uy=dy/L,uz=dz/L;let rx,ry,rz;if(Math.abs(uy)<.98){rx=uz;ry=0;rz=-ux}else{rx=1;ry=0;rz=0}const rl=Math.hypot(rx,ry,rz);rx/=rl;ry/=rl;rz/=rl;const fx=uy*rz-uz*ry,fy=uz*rx-ux*rz,fz=ux*ry-uy*rx;bt.add(cyR(r1/r0,sg),[rx,ry,rz,0,ux,uy,uz,0,fx,fy,fz,0,a[0],a[1],a[2],1],[r0,L,r0],col,gy)};
  const BRK=r=>hc(16+r*8,50,27+r*8),NDL=(t,r)=>hc(104-t*22+r*8,46+t*6,20+t*16+r*4);
- const tufts=(x,z,n,sc)=>{for(let q=0;q<n;q++){const a=q*2.4+hs(x,z)*6,rr=(.25+hs(q,x*3)*.35)*sc,px=x+Math.cos(a)*rr,pz=z+Math.sin(a)*rr;if(pdist(px,pz)<.55)continue;const h=terrH(px,pz),k=hs(q,z*7);GR.add(k>.5?gT2:gT1,mm(mT(px,h,pz),mY(k*9)),[sc,sc*(.8+k*.6),sc],hc(80+k*26,46,34+hs(q,3)*14),h)}};
+ const tufts=(x,z,n,sc)=>{for(let q=0;q<0;q++){const a=q*2.4+hs(x,z)*6,rr=(.25+hs(q,x*3)*.35)*sc,px=x+Math.cos(a)*rr,pz=z+Math.sin(a)*rr;if(pdist(px,pz)<.55)continue;const h=terrH(px,pz),k=hs(q,z*7);GR.add(k>.5?gT2:gT1,mm(mT(px,h,pz),mY(k*9)),[sc,sc*(.8+k*.6),sc],hc(80+k*26,46,34+hs(q,3)*14),h)}};
  const spruce0=(x,z,s,lod,sp)=>{const y=terrH(x,z),r0=hs(x*2.3,z*1.1),r1=hs(x*.7,z*3.3),H=(1.55+r1*.5)*s*(sp?1.3:1),tr=BRK(r0);
   B.add(cyR(.15,lod?5:8),mT(x,y-.02,z),[.075*s,H*1.0,.075*s],tr,y);B.add(gDisc,mT(x,y+.012,z),[.5*s,1,.5*s],hc(30,30,13),y);
   V.add(cyR(0,lod?6:9),mT(x,y+.32*s,z),[(sp?.24:.4)*s,H*.7,(sp?.24:.4)*s],hc(108,42,13+r0*3),y);
@@ -884,7 +884,7 @@ function buildScene(){
   for(let q=0;q<5;q++){const t=.32+q*.025,mx=x+ca*L*t+sa*.06*s,mz=z+sa*L*t-ca*.06*s,mh=(.02+hs(q,x)*.025)*s;B.add(cyR(.8,4),mT(mx,y+r*1.2,mz),[.004*s,mh,.004*s],[.92,.92,.88],y);B.add(gSpS,mT(mx,y+r*1.2+mh,mz),[.013*s,.007*s,.013*s],[.95,.95,.92],y)}
   tufts(x,z,4,1)};
  const twig0=(x,z,s)=>{const y=terrH(x,z)+.02,a=hs(x,z)*6,tr=hc(22,38,30),p0=[x,y,z],p1=[x+Math.cos(a)*.7*s,y+.03,z+Math.sin(a)*.7*s];segB(B,p0,p1,.018*s,.01*s,tr,y-.02,5);for(let q=0;q<3;q++){const t=.3+q*.22,b=a+(q%2?.7:-.7),p=[x+Math.cos(a)*.7*s*t,y+.02,z+Math.sin(a)*.7*s*t];segB(B,p,[p[0]+Math.cos(b)*.25*s,y+.05+q*.02,p[2]+Math.sin(b)*.25*s],.01*s,.005*s,tr,y-.02,4)}};
- const DEC_=[];window.DEC_=DEC_;const WR=f=>(x,z,...a)=>{const b0=B.g.v.length,v0=V.g.v.length;f(x,z,...a);DEC_.push([x,z,b0,B.g.v.length,v0,V.g.v.length])};const oak=WR(cpine0),pine=WR(spruce0),birch=WR(fir0),bush=WR(bush1),fern=WR(fern1),rock=WR(rock0),stump=WR(stump1),logm=WR(log1),shroom=WR(shroom1),twig=WR(twig0);
+ const DEC_=[];window.DEC_=DEC_;const WR=f=>(x,z,...a)=>{const b0=B.g.v.length,v0=V.g.v.length;f(x,z,...a);DEC_.push([x,z,b0,B.g.v.length,v0,V.g.v.length])};const oak=WR(cpine0),pine=WR(spruce0),birch=WR(fir0),bush=WR(()=>{}),fern=WR(()=>{}),rock=WR(rock0),stump=WR(stump1),logm=WR(log1),shroom=WR(shroom1),twig=WR(twig0);
  // alan içi dekor
  for(const k in decor){if(HB.has(k)||HOUSES.some(h=>Math.hypot(h[0]-+k.split(',')[0],h[1]-+k.split(',')[1])<2.0))continue;const[c,r]=k.split(',').map(Number),x=c+.5-N/2,z=r+.5,q=hs(c*2,r);if(decor[k]=='t'&&(pdist(x,z)<1.9||(pdist(x,z)<2.8&&hs(c,r*3)>.35)))continue;if(decor[k]=='t'){const s=.85+hs(c,r)*.35;(q<.4?oak:q<.7?pine:birch)(x,z,s)}else{rock(x,z,.9+hs(c,r)*.5)}}
  // orman
@@ -1006,9 +1006,9 @@ for(const[hc_,hr_,ro,ki]of HOUSES){const hx0=hc_+.5-N/2,hz0=hr_+.5;
   else{fern(x,z,1.2+k*.8);if(k>.5)fern(x+.2,z+.1,1)}}
  // çim tutamları
  const tuf=gT1,tuf2=gT2;
- for(let i=0;i<5200;i++){const x=(hs(i,3)-.5)*30,z=(hs(i,9)-.5)*26+6;if(pdist(x,z)<.52||pondD(x,z)<.9)continue;const h=terrH(x,z),k=hs(i,5),big=k>.8;GR.add(big?tuf2:(k<.25?gT3:tuf),mm(mT(x,h,z),mY(hs(i,7)*6)),[1,.7+hs(i,2)*.7,1],hc(78+hs(i,6)*30,42+hs(i,8)*14,32+hs(i,4)*16),h)}
- for(let i=0;i<3300;i++){const x=(hs(i,61)-.5)*64,z=hs(i,62)*60-21;if(Math.abs(x)<15.5&&z>-6.5&&z<19.5)continue;if(pdist(x,z)<.6||pondD(x,z)<1.1||Math.hypot(x-ECX,z-ECZ)<9)continue;const h=terrH(x,z),k=hs(i,65);GR.add(k>.6?gT2:gT1,mm(mT(x,h,z),mY(k*7)),[1.15,1+k*.6,1.15],hc(78+hs(i,66)*28,44,30+hs(i,67)*16),h)}
- for(let i=0;i<380;i++){const x=(hs(i,13)-.5)*28,z=(hs(i,19)-.5)*24+6;if(pdist(x,z)<.6||pondD(x,z)<.9)continue;const h=terrH(x,z),k=hs(i,15),col=k>.7?[.97,.88,.35]:k>.5?[.96,.95,.92]:k>.3?[.9,.45,.65]:[.65,.55,.92],fh=.16+hs(i,17)*.14;GR.add(cylRaw(1,4),mT(x,h,z),[.006,fh,.006],[.3,.5,.2],h);for(let q=0;q<5;q++)GR.add(gSp8,mm(mT(x,h+fh,z),mY(q*1.26),mT(.016,0,0)),[.014,.006,.012],col,h);GR.add(gSp8,mT(x,h+fh+.004,z),[.008,.008,.008],[.9,.7,.1],h)}
+ for(let i=0;i<0;i++){const x=(hs(i,3)-.5)*30,z=(hs(i,9)-.5)*26+6;if(pdist(x,z)<.52||pondD(x,z)<.9)continue;const h=terrH(x,z),k=hs(i,5),big=k>.8;GR.add(big?tuf2:(k<.25?gT3:tuf),mm(mT(x,h,z),mY(hs(i,7)*6)),[1,.7+hs(i,2)*.7,1],hc(78+hs(i,6)*30,42+hs(i,8)*14,32+hs(i,4)*16),h)}
+ for(let i=0;i<0;i++){const x=(hs(i,61)-.5)*64,z=hs(i,62)*60-21;if(Math.abs(x)<15.5&&z>-6.5&&z<19.5)continue;if(pdist(x,z)<.6||pondD(x,z)<1.1||Math.hypot(x-ECX,z-ECZ)<9)continue;const h=terrH(x,z),k=hs(i,65);GR.add(k>.6?gT2:gT1,mm(mT(x,h,z),mY(k*7)),[1.15,1+k*.6,1.15],hc(78+hs(i,66)*28,44,30+hs(i,67)*16),h)}
+ for(let i=0;i<0;i++){const x=(hs(i,13)-.5)*28,z=(hs(i,19)-.5)*24+6;if(pdist(x,z)<.6||pondD(x,z)<.9)continue;const h=terrH(x,z),k=hs(i,15),col=k>.7?[.97,.88,.35]:k>.5?[.96,.95,.92]:k>.3?[.9,.45,.65]:[.65,.55,.92],fh=.16+hs(i,17)*.14;GR.add(cylRaw(1,4),mT(x,h,z),[.006,fh,.006],[.3,.5,.2],h);for(let q=0;q<5;q++)GR.add(gSp8,mm(mT(x,h+fh,z),mY(q*1.26),mT(.016,0,0)),[.014,.006,.012],col,h);GR.add(gSp8,mT(x,h+fh+.004,z),[.008,.008,.008],[.9,.7,.1],h)}
  // gölet çevresi
  for(let i=0;i<60;i++){const a=hs(i,31)*PI*2,r=1.0+hs(i,32)*.45,x=POND.x+Math.cos(a)*POND.rx*r,z=POND.z+Math.sin(a)*POND.rz*r;if(pdist(x,z)<1)continue;const h=terrH(x,z),hh=.35+hs(i,33)*.4;GR.add(cylRaw(.15,5),mT(x,h-.05,z),[.018,hh,.018],hc(95,40,30),h);if(i%3==0)GR.add(cylRaw(1,6),mT(x,h+hh*.6,z),[.02,.09,.02],hc(25,40,20),h)}
  for(let i=0;i<9;i++){const a=i*.9,x=POND.x+Math.cos(a)*1.0*POND.rx*.55,z=POND.z+Math.sin(a)*POND.rz*.5;V.add(discG(),mT(x,-.16,z),[.2,1,.17],hc(110,50,28),0)}
@@ -1075,7 +1075,7 @@ let SB,VB,GRB,GW,SBG,VBG,GRG;
 /* ===== düşman iskeleti (IK + ayrıntılı anatomi) ===== */
 const EKB={goblin:1,wolf:1,orc:1.3,troll:2,brute:1.22,chief:1.35,rider:1},HT={goblin:.66,wolf:.8,orc:.9,troll:1.7,brute:.84,chief:1.3,rider:.7};
 const GAIT={goblin:.22,wolf:.3,orc:.23,troll:.21,brute:.18,chief:.18,rider:.3};
-const heightOf=e=>1.56*HT[e.k]*(e.sz/EKB[e.k]),stepOf=e=>GAIT[e.k]*1.613*heightOf(e);
+const heightOf=e=>1.872*HT[e.k]*(e.sz/EKB[e.k]),stepOf=e=>GAIT[e.k]*1.613*heightOf(e);
 const K3={goblin:[86,66,25],wolf:[248,20,22],orc:[138,54,21],troll:[100,42,19],brute:[14,66,24]};
 let GS8;
 function ik2(hx,hy,tx,ty,l1,l2,bs){const dx=tx-hx,dy=ty-hy,d=Math.hypot(dx,dy)||1e-4,dm=Math.min(d,l1+l2-.002),dd=Math.max(Math.abs(l1-l2)+.002,dm),a=(l1*l1-l2*l2+dd*dd)/(2*dd),h=Math.sqrt(Math.max(0,l1*l1-a*a)),ux=dx/d,uy=dy/d;return[hx+ux*a-uy*h*bs,hy+uy*a+ux*h*bs,hx+ux*dm,hy+uy*dm]}
@@ -1306,7 +1306,7 @@ function gunnerFig(M,rm,seed){
  seg3(T,[0,sh,-.066],eL,.024,.019,red,0,8);seg3(T,eL,hL,.019,.014,skin,0,8);spA(T,hL[0],hL[1],hL[2],.016,.015,.016,skin);
  seg3(T,[-.04+ram,.119,0],[.24+ram,.119,0],.006,.006,KC.wood,0,6);spA(T,.25+ram,.119,0,.02,.02,.02,[.55,.5,.4]);seg3(T,[.23+ram,.119,0],[.27+ram,.119,0],.016,.016,[.35,.3,.25],0,6)}
 
-function tower(t){if(t.ox===undefined){t.ox=0;t.oz=0;const bx0=t.c+.5-N/2,bz0=t.r+.5;let md=9,mx=0,mz=0;for(let i=0;i<PT.p.length;i+=2){const p=PT.p[i],d=Math.hypot(p[0]-N/2-bx0,p[1]-bz0);if(d<md){md=d;mx=p[0]-N/2;mz=p[1]}}for(let c=-9;c<-1.4;c+=.5){const d=Math.hypot(c-N/2-bx0,1.5-bz0);if(d<md){md=d;mx=c-N/2;mz=1.5}}const DM=1.58;if(md<DM&&md>.01){const k=Math.min(DM-md,.6)/md;t.ox=(bx0-mx)*k;t.oz=(bz0-mz)*k}}const X=t.c+.5-N/2+t.ox,Z=t.r+.5+t.oz,k=t.kick,L=t.lvl,a=t.ang,M0=mm(mT(X,0,Z),[1.597,0,0,0,0,1.597*(t.type=='archer'?1.05:t.type=='mage'?.95:t.type=='fire'?1.08:1.2),0,0,0,0,1.597,0,0,0,0,1]),Mr=mm(M0,mY(-a)),sd=t.c*7+t.r*3,fl=1+Math.sin(time*12+sd)*.2;
+function tower(t){if(t.ox===undefined){t.ox=0;t.oz=0;const bx0=t.c+.5-N/2,bz0=t.r+.5;let md=9,mx=0,mz=0;for(let i=0;i<PT.p.length;i+=2){const p=PT.p[i],d=Math.hypot(p[0]-N/2-bx0,p[1]-bz0);if(d<md){md=d;mx=p[0]-N/2;mz=p[1]}}for(let c=-9;c<-1.4;c+=.5){const d=Math.hypot(c-N/2-bx0,1.5-bz0);if(d<md){md=d;mx=c-N/2;mz=1.5}}const DM=1.58;if(md<DM&&md>.01){const k=Math.min(DM-md,.6)/md;t.ox=(bx0-mx)*k;t.oz=(bz0-mz)*k}}const X=t.c+.5-N/2+t.ox,Z=t.r+.5+t.oz,k=t.kick,L=t.lvl,a=t.ang,M0=mm(mT(X,0,Z),[1.9164,0,0,0,0,1.9164*(t.type=='archer'?1.05:t.type=='mage'?.95:t.type=='fire'?1.08:1.2),0,0,0,0,1.9164,0,0,0,0,1]),Mr=mm(M0,mY(-a)),sd=t.c*7+t.r*3,fl=1+Math.sin(time*12+sd)*.2;
  prim(GD_,mT(X,.02,Z),[.62,1,.62],[0,0,0],0,.22);prim(GD_,mT(X,.026,Z),[.78+.03*Math.sin(time*3+sd),1,.78+.03*Math.sin(time*3+sd)],t.type=='archer'?[1,.76,.2]:t.type=='mage'?[.62,.35,1]:t.type=='fire'?[1,.32,.06]:[1,.45,.12],.8,.42);
  const K=KC;
  cy(M0,0,0,0,.5,.46,.1,K.dst,18);for(let i=0;i<7;i++){const q=i/7*PI*2+t.c;spA(M0,Math.cos(q)*.47,.04,Math.sin(q)*.47,.07,.05,.06,hc(30,4,34+hs(i,t.c)*10))}
@@ -1341,7 +1341,7 @@ function tower(t){if(t.ox===undefined){t.ox=0;t.oz=0;const bx0=t.c+.5-N/2,bz0=t.
   for(let i=0;i<12;i++){const q=i/12*PI*2;bxA(M0,Math.cos(q)*.44,1.1,Math.sin(q)*.44,.025,.1,.025,K.wood2)}prim(tor(.012),mm(M0,mT(0,1.16,0)),[.44,1,.44],K.wood2);prim(tor(.012),mm(M0,mT(0,1.08,0)),[.44,1,.44],K.wood2);
   if(L>=2)for(let i=0;i<6;i++){const q=i/6*PI*2+.3;prim(cyl(1,12),mm(M0,mT(Math.cos(q)*.455,1.07,Math.sin(q)*.455),mZ(PI/2),mX(-q)),[.07,.012,.07],i%2?[.7,.2,.15]:K.gold)}
   const dtt=Math.min(.05,Math.max(0,time-(t.lt===undefined?time:t.lt)));t.lt=time;const sd_=x=>Math.atan2(Math.sin(x),Math.cos(x)),ta_=t.wa===undefined?0:t.wa;if(t.fa===undefined){t.fa=ta_;t.la=ta_}t.fa+=sd_(ta_-t.fa)*(1-Math.exp(-10*dtt));t.la+=sd_(t.fa-t.la)*(1-Math.exp(-3.2*dtt));const SR_=sd_(t.fa-t.la),SH_=Math.max(-1,Math.min(1,sd_(ta_-t.fa)))*.7,SL_=Math.min(1,Math.abs(SR_)*3.5+Math.abs(sd_(ta_-t.fa))*1.5);const n=1;window.NV_=L==2;window.LV_=L;for(let i=0;i<n;i++){const off=i?1.2:0;(L<2?peasantFig:archerFig)(mm(M0,mT(Math.cos(a+off)*.0+(i?-.18:0),1.03,(i?.2:0)),mY(-t.la+(i?.4:0)),mS(L>=5?1.7325:1.65)),0,k,sd+i,L>=3?1:0,t.cd<-.3?undefined:Math.max(0,Math.min(1,(t.rate-t.cd)/t.rate)),SR_,SH_,SL_)}
-  const lx=Math.cos(.8)*.42,lz=Math.sin(.8)*.42;bxA(M0,lx,1.12,lz,.035,.045,.035,K.iron);flame(X+lx*1.597,1.12*1.597*1.05+.02,Z+lz*1.597,.79,sd);
+  const lx=Math.cos(.8)*.42,lz=Math.sin(.8)*.42;bxA(M0,lx,1.12,lz,.035,.045,.035,K.iron);flame(X+lx*1.9164,1.12*1.9164*1.05+.02,Z+lz*1.9164,.95,sd);
   if(L>=4){const R=.45,NS=20;for(let i=0;i<NS;i++){const q=i*(PI*2/NS),x=Math.cos(q)*R,z=Math.sin(q)*R,h=.11+.07*Math.abs(Math.sin(i*1.9+1))+(i%2?0:.04)+(i%5==0?.06:0);
    bxA(M0,x,1.06,z,.058,.04,.058,K.st2,-q);prim(cyl(0,6),mm(M0,mT(x,1.08,z)),[.05,h,.05],i%2?[.78,.84,.96]:K.st3);
    if(i%3==1){prim(cyl(0,5),mm(M0,mT(x,1.08+h*.7,z)),[.02,.09,.02],[.35,1,.9],.9);spA(M0,x,1.08+h*.7+.09,z,.012,.012,.012,[.7,1,.95],1)}}
